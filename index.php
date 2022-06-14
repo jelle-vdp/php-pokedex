@@ -14,9 +14,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $pokeData = @file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $searchInput);
 
         if (is_numeric($searchInput) && !$pokeData) {
-            $displayErrId = "style = 'display:block'";
+            unset( $_GET );
         } elseif (!is_numeric($searchInput) && !$pokeData) {
-            $displayErrNum = "style = 'display:block'";
+            unset( $_GET );
         } else {
             $displayPokedex = "style = 'display:flex'";
             $pokeDataParsed = json_decode(file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $searchInput));
