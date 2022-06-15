@@ -1,23 +1,21 @@
 <?php 
-
 $displayPokedex;
-$displayErrNum;
-$displayErrId;
 $displayEvolution;
+$displayErrorName;
+$displayErrorId;
 
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['btn-findpokemon'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['btn-findpokemon'])) {
 
-        $searchInput = $_GET["input-findpokemon"];
-        $searchInputInt = intval($searchInput);
+        $searchInput = str_replace(' ', '-', strtolower($_POST["input-findpokemon"]));
 
         $pokeData = @file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $searchInput);
 
         if (is_numeric($searchInput) && !$pokeData) {
-            unset( $_GET );
-        } elseif (!is_numeric($searchInput) && !$pokeData) {
-            unset( $_GET );
-        } else {
+            $displayErrorId = "style = 'display:block'";
+        } elseif ((!is_numeric($searchInput) && !$pokeData) || empty($searchInput)) {
+            $displayErrorName = "style = 'display:block'";
+        } elseif (!empty($searchInput)) {
             $displayPokedex = "style = 'display:flex'";
             $pokeDataParsed = json_decode(file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $searchInput));
 
@@ -51,16 +49,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
 <body>
     <main>
-        <form class="pokedex-search" action="index.php" method="GET">
+        <form class="pokedex-search" action="index.php" method="POST">
             <p class="pokedex-search__description">Search for a pokémon name or a pokémon ID</p>
             <div class="pokedex-search__bar"> 
                 <input class="input-findpokemon" name="input-findpokemon" type="text">
                 <button type="submit" class="btn-findpokemon" name="btn-findpokemon">Find your pokémon</button>
             </div>
-            <p class="pokedex-search__error pokedex-search__error-id"<?php if(!empty($displayErrId)){echo $displayErrId;}?>>
+            <p class="pokedex-search__error pokedex-search__error-id"<?php if(!empty($displayErrorId)){echo $displayErrorId;}?>>
                 You gave in a wrong ID, make sure it's between 1 and 898 or between 10001 and 10228.
             </p>
-            <p class="pokedex-search__error pokedex-search__error-name"<?php if(!empty($displayErrNum)){echo $displayErrNum;}?>>
+            <p class="pokedex-search__error pokedex-search__error-name"<?php if(!empty($displayErrorName)){echo $displayErrorName;}?>>
                 The name you entered isn't a pokémon, maybe you've made a spelling error?
             </p>
         </form>
@@ -84,11 +82,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                         </div>
                             
                         <div class="pokedex__img-container-content">
-                            <img src="<?php echo $pokeDataParsed->sprites->front_default; ?>" class="pokedex__img--active">
-                            <img src="<?php echo $pokeDataParsed->sprites->back_default; ?>">
-                            <img src="<?php echo $pokeDataParsed->sprites->front_shiny; ?>">
-                            <img src="<?php echo $pokeDataParsed->sprites->back_shiny; ?>">
-                            <h3><?php echo ucfirst($pokeDataParsed->name); ?></h3>
+                            <img src="<?php echo $pokeDataParsed->sprites->front_default; ?>" data-sprite-1="<?php echo $pokeDataParsed->sprites->front_default; ?>" data-sprite-2="<?php echo $pokeDataParsed->sprites->back_default; ?>" data-sprite-3="<?php echo $pokeDataParsed->sprites->front_shiny; ?>" data-sprite-4="<?php echo $pokeDataParsed->sprites->back_shiny; ?>">
+                            <h3><?php echo str_replace('-', ' ', ucfirst($pokeDataParsed->name)); ?></h3>
                         </div>
 
                         <div class="pokedex__img-container-bottom">
@@ -138,17 +133,19 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                                 $maxLoop = count($pokeDataParsed->moves);
                             } else {
                                 $maxLoop = 5;
-                            }
+                            };
 
+                            $openLi;
                             for ($i = 0; $i <= $maxLoop; $i++) {
-                                echo "<li>" . str_replace('-', ' ',ucfirst($pokeDataParsed->moves[$i]->move->name)) . "</li>";
-                            }
+                                if ($i === 0) {$openLi = "<li class='selected'>";} else {$openLi = "<li>";};
+                                echo $openLi . str_replace('-', ' ',ucfirst($pokeDataParsed->moves[$i]->move->name)) . "</li>";
+                            };
                         ?> 
                     </ul>
                 </div>
                 <div class="pokedex__previous-evolution"<?php if(!empty($displayEvolution)){echo $displayEvolution;}?>>
                     <h3>Previous evolution:</h3>
-                    <h4><?php echo ucfirst($previousEvolution->name); ?></h4>
+                    <h4><?php echo str_replace('-', ' ', ucfirst($previousEvolution->name)); ?></h4>
                     <img src="<?php echo $previousEvolution->sprites->front_default; ?>"/>
                 </div>
             </div>

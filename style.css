@@ -229,10 +229,6 @@ main .pokedex__left-page-middle .pokedex__img-container-content img {
   height: auto;
 }
 
-main .pokedex__left-page-middle .pokedex__img-container-content img:not(.pokedex__img--active) {
-  display: none;
-}
-
 main .pokedex__left-page-middle .pokedex__img-container-bottom {
   padding: 0.5rem 15%;
   display: -webkit-box;
