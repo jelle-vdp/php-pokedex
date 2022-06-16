@@ -5,9 +5,9 @@ $displayErrorName;
 $displayErrorId;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['btn-findpokemon'])) {
+    if (isset($_POST["btn-findpokemon"])) {
 
-        $searchInput = str_replace(' ', '-', strtolower($_POST["input-findpokemon"]));
+        $searchInput = str_replace(" ", "-", strtolower($_POST["input-findpokemon"]));
 
         $pokeData = @file_get_contents("https://pokeapi.co/api/v2/pokemon/" . $searchInput);
 
@@ -29,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         };
     };
+
 };
 ?>
 
@@ -44,7 +45,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     rel="stylesheet"
   />
   <link rel="stylesheet" href="style.css" />
-  <script src="script.js" defer></script>
 </head>
 
 <body>
@@ -114,33 +114,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <span></span>
                     </div>
                 </div>
+                
+                <div class="pokedex__attack">
+                    <p>Total amount of damage afflicted: <b>0</b></p>
+                    <ul>
+
+                    </ul>
+                </div>
             </div>
+
+    
+            
             
             <div class="pokedex__right-page">
                 <div class="pokedex__moves">
                     <h3>
                         <?php 
                             if (count($pokeDataParsed->moves) === 1){
-                                echo "The move of your pokémon:";
+                                echo "The attack of your pokémon:";
                             } else {
-                                echo "Some moves of your pokémon:";
+                                echo "Some attacks of your pokémon:";
                             } 
                         ?>
                     </h3>
+                    <p>(Click an attack to perform it)</p>
                     <ul>
                         <?php
                             if (count($pokeDataParsed->moves) < 5){
-                                $maxLoop = count($pokeDataParsed->moves);
+                                $maxLoop = count($pokeDataParsed->moves) - 1;
                             } else {
-                                $maxLoop = 5;
+                                $maxLoop = 9;
                             };
 
-                            $openLi;
                             for ($i = 0; $i <= $maxLoop; $i++) {
-                                if ($i === 0) {$openLi = "<li class='selected'>";} else {$openLi = "<li>";};
-                                echo $openLi . str_replace('-', ' ',ucfirst($pokeDataParsed->moves[$i]->move->name)) . "</li>";
-                            };
-                        ?> 
+                                $selectedLi = "";
+
+                                if($i == 0){$selectedLi = " class='selected'";};
+                                
+                                echo "<li" . $selectedLi . ">" . str_replace('-', ' ',ucfirst($pokeDataParsed->moves[$i]->move->name)) ."</li>";};
+                        ?>
                     </ul>
                 </div>
                 <div class="pokedex__previous-evolution"<?php if(!empty($displayEvolution)){echo $displayEvolution;}?>>
@@ -151,5 +163,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </section>
     </main>
+    <script src="script.js"></script>
 </body>
 </html>

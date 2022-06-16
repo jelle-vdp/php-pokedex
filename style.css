@@ -100,9 +100,6 @@ main .pokedex__left-page {
 }
 
 main .pokedex__left-page-top {
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
   padding: 1rem 10%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -146,9 +143,6 @@ main .pokedex__left-page-top .pokedex__btn-green {
 }
 
 main .pokedex__left-page-middle {
-  -webkit-box-flex: 3;
-      -ms-flex-positive: 3;
-          flex-grow: 3;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -283,9 +277,6 @@ main .pokedex__left-page-middle .pokedex__img-container::after {
 }
 
 main .pokedex__left-page-bottom {
-  -webkit-box-flex: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
   padding: 1rem 10%;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -377,6 +368,32 @@ main .pokedex__left-page-bottom .pokedex__controller span:nth-child(2) {
   margin-left: -15px;
 }
 
+main .pokedex__left-page .pokedex__attack {
+  padding: 1rem 10%;
+  text-align: center;
+}
+
+main .pokedex__left-page .pokedex__attack p {
+  margin-bottom: 1rem;
+}
+
+main .pokedex__left-page .pokedex__attack ul {
+  display: none;
+  background-color: #BFD7EA;
+  color: #242424;
+  padding: 0 0.5rem;
+  border-radius: 5px;
+  list-style: none;
+}
+
+main .pokedex__left-page .pokedex__attack ul li {
+  padding: 0.5rem 0;
+}
+
+main .pokedex__left-page .pokedex__attack ul li:not(:last-child) {
+  border-bottom: 1px solid #333;
+}
+
 main .pokedex__right-page {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -403,6 +420,12 @@ main .pokedex__right-page .pokedex__moves h3 {
   margin-bottom: 0.5rem;
 }
 
+main .pokedex__right-page .pokedex__moves p {
+  font-size: 0.8rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
 main .pokedex__right-page .pokedex__moves ul {
   list-style-type: none;
 }
@@ -414,6 +437,10 @@ main .pokedex__right-page .pokedex__moves ul li {
 
 main .pokedex__right-page .pokedex__moves ul li:not(:last-child) {
   margin-bottom: 0.3rem;
+}
+
+main .pokedex__right-page .pokedex__moves ul li.selected {
+  cursor: pointer;
 }
 
 main .pokedex__right-page .pokedex__moves ul li.selected::before {
