@@ -52,9 +52,11 @@ pokedexMovesListItems.forEach((li, i) => {
                 .then(res => res.json())
                 .then(dataMove => {
                     let randomNum = Math.random();
-                    if (randomNum < (dataMove.accuracy / 100)){
+                    if (randomNum < (dataMove.accuracy / 100) && dataMove.power !== null){
                         pokemonAttacksMsgArr.push(`${pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1).replaceAll("-", " ")} performed <b>${dataMove.name.charAt(0).toUpperCase() + dataMove.name.slice(1).replaceAll("-", " ")}</b> succesfully, and inflicted <b>${dataMove.power}</b> damage.`);
                         totalAmountOfDamage += dataMove.power;
+                    } else if (dataMove.power === null) {
+                        pokemonAttacksMsgArr.push(`${pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1).replaceAll("-", " ")} performed <b>${dataMove.name.charAt(0).toUpperCase() + dataMove.name.slice(1).replaceAll("-", " ")}</b> succesfully, but this attack didn't afflict any damage.`);
                     } else {
                         pokemonAttacksMsgArr.push(`${pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1).replaceAll("-", " ")} performed <b>${dataMove.name.charAt(0).toUpperCase() + dataMove.name.slice(1).replaceAll("-", " ")}</b> unsuccesfully, no damage inflicted.`);
                     };
